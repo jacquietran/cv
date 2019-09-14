@@ -1,0 +1,145 @@
+---
+name: Dr Jacquie Tran
+position: "Sport science researcher"
+address: "Auckland, New Zealand"
+profilepic: jacquietran.jpg
+www: jacquietran.com
+email: "jac@jacquietran.com"
+twitter: jacquietran
+github: jacquietran
+date: "`r format(Sys.time(), '%B %Y')`"
+aboutme: "I combine my strong research background with extensive experience providing performance support in the daily training and competition environment. I am passionate about using research methods for applied impact, to address real-world problems faced by high performance athletes, coaches, and support staff.\n\nWith a curious and empathic nature, I am adept at building productive relationships. I promote open and collaborative work practices and healthy candour in my teams. I have multidisciplinary expertise in sports data analytics, wearable technologies in sport, physical preparation and performance, and athlete monitoring."
+output: vitae::twentyseconds
+---
+
+```{r setup, include = FALSE}
+
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+
+library(vitae)
+library(rorcid)
+library(dplyr)
+
+```
+
+# Current employment
+
+## TEAM LEADER - KNOWLEDGE EDGE FOR TOKYO
+
+**High Performance Sport New Zealand (Auckland, NZL) | 2019 - present**
+
+I provide research and analytics support to a range of NZ Olympic and Paralympic sports, including: Rowing, Snow Sports, Netball, Hockey, Athletics, Canoe Racing, Rugby Sevens, Cycling, Swimming, and Triathlon.
+
+I work directly with program leaders from National Sporting Organisations (High Performance Directors, Head Coaches, and CEOs) to co-design research approaches that align with the priorities and objectives of each high performance program. I collaborate with other members in the Knowledge Edge for Tokyo team to capture the reflections and experiences of athletes, coaches, and support staff about their preparation for and performance at pinnacle events.
+
+We collect data using online surveys and semi-structured interviews. The technical and analytical components of my role include: data storage and preparation in a customised relational database; analysis of text and numeric data using appropriate qualitative and quantitative techniques (sentiment analysis, n-gram frequency and network analysis, topic modelling, supervised labelling, medal likelihood predictions, thematic analysis). From these analyses, we produce sport-specific reports for program leaders, and share cross-sport insights with the wider community of High Performance Directors, the HPSNZ Senior Leadership Team, and the HPSNZ Board.
+
+# Recent employment history
+
+```{r employment}
+
+# Retrieve employment summary from ORCID ---------------------------------------
+
+employment_history <- orcid_employments("0000-0002-5588-542X")$`0000-0002-5588-542X`$`affiliation-group`$summaries
+
+# Convert from list to data frame ----------------------------------------------
+
+employment_history_df <- data.frame(
+  matrix(
+    unlist(employment_history), nrow = length(employment_history),
+    byrow = TRUE),
+  stringsAsFactors = FALSE)
+
+# Tidy up the employment data --------------------------------------------------
+
+employment_history_tidy <- employment_history_df %>%
+  filter(!grepl("[[:digit:]]", X1)) %>%
+  select(X1, X18, X21, X23, X25) %>%
+  rename(role = X1, start_year = X18, end_year = X21, organisation = X23,
+         location = X25)
+
+# Display employment summary ---------------------------------------------------
+
+employment_history_tidy %>%
+  detailed_entries(
+    what = role,
+    when = glue::glue("{start_year} - {end_year}"),
+    with = organisation,
+    where = location)
+
+```
+
+# Education
+
+```{r education}
+
+# Retrieve education summary from ORCID ----------------------------------------
+
+education_history <- orcid_educations("0000-0002-5588-542X")$`0000-0002-5588-542X`$`affiliation-group`$summaries
+
+# Convert from list to data frame ----------------------------------------------
+
+education_history_df <- data.frame(
+  matrix(
+    unlist(education_history), nrow = length(education_history),
+    byrow = TRUE),
+  stringsAsFactors = FALSE)
+
+# Tidy up the education data ---------------------------------------------------
+
+education_history_tidy <- education_history_df %>%
+  select(X2, X3, X20, X21, X23, X24, X25, X26) %>%
+  rename(dept = X2, degree = X3, start_year = X20, start_year_pt2 = X21,
+         end_year = X23, end_year_pt2 = X24, university = X25,
+         location = X26) %>%
+  mutate(
+    start_year = case_when(
+      is.na(start_year) == TRUE ~ start_year_pt2,
+      TRUE                      ~ start_year),
+    end_year = case_when(
+      is.na(end_year) == TRUE ~ end_year_pt2,
+      TRUE                    ~ end_year)) %>%
+  select(-ends_with("pt2")) %>%
+  mutate(
+    thesis_title = case_when(
+      start_year == 2009 ~ "Validation of accelerometer technology for measuring impacts",
+      start_year == 2010 ~ "Training loads, athlete well-being, and performance in rowing",
+      TRUE               ~ NA_character_))
+
+# Display education summary ----------------------------------------------------
+
+education_history_tidy %>%
+  detailed_entries(
+    what = degree,
+    when = glue::glue("{start_year} - {end_year}"),
+    with = university,
+    where = location)
+
+```
+
+# Data analytics skills & competencies
+
+- 5 years' experience using R for data preparation, analytics, visualisation, and reporting. Advanced R skills include: writing functions, creating packages, and building interactive dashboards, reports, and slide decks.
+- Strong understanding of and skills in data storage and management using database languages and systems (e.g., SQL, Smartbase).
+- Expansive analytics skills spanning regression and prediction models, classification techniques, network analysis, time series analysis, text mining, and natural language processing.
+- Comfortable working with quantitative and qualitative data and large data sets, and integrating data from varied sources.
+- 11 years' experience applying traditional research statistics.
+
+# Applied sport research skills
+
+- Skilled collaborator who works with domain experts to identify problems, gather high-quality data, and develop evidence-based strategies and solutions. 
+- Experienced across all phases of the research process, including: project scoping, critically appraising relevant literature, designing research questions and study methods, conducting data collection and analysis, and reporting findings via written, verbal, and visual methods.
+
+# Written, verbal, & visual communication
+
+- Excellent ability to communicate flexibly, using a variety of communication methods and styles depending on the target audience and the situation. Able to connect and communicate with individuals with different perspectives and priorities.
+- Highly developed skills in written and verbal communication. Able to distill complex ideas into key messages. Proficient at communicating with technical and non-technical audiences.
+- Excellent skills in visual information design, with extensive experience creating data visualisations (using R, Tableau, Power BI, Plotly, and MS Excel), infographics, and sketchnotes. Examples here: www.jacquietran.com/portfolio.
+
+# Peer-reviewed publications
+
+# Conference presentations and posters
+
+# Invited presentations
+
+# Other talks
